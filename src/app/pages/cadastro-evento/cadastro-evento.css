@@ -1,10 +1,11 @@
 
 :host {
   display: block;
-  max-width: 650px;
-  margin: 30px auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 25px 15px;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 h1, h2 {

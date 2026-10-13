@@ -1,7 +1,61 @@
-<nav>
-  <a routerLink="/eventos/novo" routerLinkActive="ativo">
-    Novo evento
-  </a>
-</nav>
 
-<router-outlet />
+<header class="cabecalho">
+  <div class="cabecalho-conteudo">
+
+    <a class="marca" routerLink="/eventos/novo">
+      <div class="marca-icone">U</div>
+
+      <div class="marca-texto">
+        <strong>Agenda UniJorge</strong>
+        <span>Portal acadêmico</span>
+      </div>
+    </a>
+
+    <nav class="menu">
+      <a
+        routerLink="/eventos/novo"
+        routerLinkActive="ativo"
+        ariaCurrentWhenActive="page">
+        <span class="mais">+</span>
+        Novo evento
+      </a>
+    </nav>
+
+  </div>
+</header>
+
+<main class="principal">
+
+  <section class="hero">
+    <div class="hero-conteudo">
+
+      <span class="hero-etiqueta">
+        GESTÃO ACADÊMICA
+      </span>
+
+      <h1>Conectando conhecimento e experiências.</h1>
+
+      <p>
+        Cadastre e organize palestras, oficinas e semanas
+        acadêmicas em um só lugar.
+      </p>
+
+      <div class="categorias">
+        <span>Palestras</span>
+        <span>Oficinas</span>
+        <span>Semanas acadêmicas</span>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="area-conteudo">
+    <router-outlet />
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <p>Agenda UniJorge • Projeto acadêmico</p>
+  <span>Gestão de eventos universitários</span>
+</footer>
