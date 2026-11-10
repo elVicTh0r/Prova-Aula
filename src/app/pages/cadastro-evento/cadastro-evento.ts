@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Evento } from '../../models/evento';
+import { Participante } from '../../models/participante';
 
 import {
   validarTitulo,
@@ -24,6 +25,10 @@ export class CadastroEvento {
   evento: Evento = this.novoEvento();
 
   eventos: Evento[] = [];
+
+  participantes: Participante[] = [];
+
+  proximoParticipanteId = 1;
 
   proximoId = 1;
 
