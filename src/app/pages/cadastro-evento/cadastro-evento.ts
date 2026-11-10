@@ -1,5 +1,13 @@
 
 import { Component } from '@angular/core';
+import { DatePipe, UpperCasePipe, DecimalPipe, CurrencyPipe, JsonPipe } from '@angular/common';
+import { TelefonePipe } from '../../pipes/telefone-pipe';
+import { FormaPagamentoPipe } from '../../pipes/forma-pagamento-pipe';
+import { IniciaisPipe } from '../../pipes/iniciais-pipe';
+import { DiasParaPipe } from '../../pipes/dias-para-pipe';
+import { TituloPipe } from '../../pipes/titulo-pipe';
+import { ResumoPipe } from '../../pipes/resumo-pipe';
+import { MascaraEmailPipe } from '../../pipes/mascara-email-pipe';
 import { FormsModule } from '@angular/forms';
 import { Evento } from '../../models/evento';
 import { Participante } from '../../models/participante';
@@ -16,7 +24,8 @@ type Campo = 'titulo' | 'data' | 'local' | 'emailResponsavel' | 'vagas';
 
 @Component({
   selector: 'app-cadastro-evento',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe, UpperCasePipe, DecimalPipe, CurrencyPipe, JsonPipe,
+    TelefonePipe, FormaPagamentoPipe, IniciaisPipe, DiasParaPipe, TituloPipe, ResumoPipe, MascaraEmailPipe],
   templateUrl: './cadastro-evento.html',
   styleUrl: './cadastro-evento.css'
 })
@@ -45,13 +54,25 @@ export class CadastroEvento {
     return { nome: '', email: '', telefone: '', formaPagamento: '' };
   }
 
+  private normalizarPagamento(valor: string): Participante['formaPagamento'] {
+    const valores: Record<string, Participante['formaPagamento']> = {
+      'Pix': 'pix', 'Cartão de crédito': 'cartao', 'Cartão de débito': 'cartao',
+      'Dinheiro': 'dinheiro', 'Boleto': 'boleto',
+      pix: 'pix', cartao: 'cartao', dinheiro: 'dinheiro', boleto: 'boleto'
+    };
+    return valores[valor] ?? '';
+  }
+
   private carregarDados(): void {
     if (typeof localStorage === 'undefined') return;
     try {
       const eventos = JSON.parse(localStorage.getItem('agenda-eventos') ?? '[]');
       const participantes = JSON.parse(localStorage.getItem('agenda-participantes') ?? '[]');
       if (Array.isArray(eventos)) this.eventos = eventos;
-      if (Array.isArray(participantes)) this.participantes = participantes;
+      if (Array.isArray(participantes)) this.participantes = participantes.map(p => ({
+        ...p,
+        formaPagamento: this.normalizarPagamento(p.formaPagamento)
+      }));
       this.proximoId = Math.max(0, ...this.eventos.map(e => e.id)) + 1;
       this.proximoParticipanteId = Math.max(0, ...this.participantes.map(p => p.id)) + 1;
     } catch {
@@ -104,7 +125,7 @@ export class CadastroEvento {
       nome: this.participanteForm.nome.trim(),
       email: this.participanteForm.email.trim(),
       telefone: this.participanteForm.telefone.trim(),
-      formaPagamento: this.participanteForm.formaPagamento.trim()
+      formaPagamento: this.participanteForm.formaPagamento
     };
 
     if (this.participanteEmEdicaoId !== null) {
