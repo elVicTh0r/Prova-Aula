@@ -71,3 +71,32 @@ button:disabled {
   margin-bottom: 12px;
   background-color: #f8f8f8;
 }
+
+.participantes {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #ddd;
+}
+
+.participante-card {
+  padding: 12px;
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.secundario {
+  background-color: #666;
+}
+
+.perigo {
+  background-color: #b42318;
+}
