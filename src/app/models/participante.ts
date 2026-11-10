@@ -1,6 +1,6 @@
 export interface Participante {
   id: number;
-  descricao: string;
+  nome: string;
   email: string;
   telefone: string;
   formaPagamento: string;
