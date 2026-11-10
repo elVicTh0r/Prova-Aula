@@ -124,9 +124,9 @@
           <h4>Participantes de {{ item.titulo }}</h4>
           <form (ngSubmit)="salvarParticipante()">
             <div class="campo">
-              <label for="descricaoParticipante">Descrição</label>
-              <input id="descricaoParticipante" name="descricaoParticipante" type="text"
-                [(ngModel)]="participanteForm.descricao" required>
+              <label for="nomeParticipante">Nome</label>
+              <input id="nomeParticipante" name="nomeParticipante" type="text"
+                [(ngModel)]="participanteForm.nome" required>
             </div>
             <div class="campo">
               <label for="emailParticipante">E-mail</label>
@@ -165,7 +165,7 @@
           <h4>Participantes cadastrados</h4>
           @for (p of participantesDoEvento(item.id); track p.id) {
             <div class="participante-card">
-              <p><strong>Descrição:</strong> {{ p.descricao }}</p>
+              <p><strong>Nome:</strong> {{ p.nome }}</p>
               <p><strong>E-mail:</strong> {{ p.email }}</p>
               <p><strong>Telefone:</strong> {{ p.telefone }}</p>
               <p><strong>Pagamento:</strong> {{ p.formaPagamento }}</p>
