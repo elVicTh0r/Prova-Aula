@@ -116,7 +116,69 @@
       <p><strong>Data:</strong> {{ item.data }}</p>
       <p><strong>Local:</strong> {{ item.local }}</p>
       <p><strong>Responsável:</strong> {{ item.emailResponsavel }}</p>
-      <p><strong>Vagas:</strong> {{ item.vagas }}</p>
+
+      <p><strong>Vagas:</strong> {{ item.vagas }} ({{ participantesDoEvento(item.id).length }} inscrito(s))</p>
+      <button type="button" (click)="selecionarEvento(item.id)">Gerenciar participantes</button>
+      @if (eventoSelecionadoId === item.id) {
+        <section class="participantes">
+          <h4>Participantes de {{ item.titulo }}</h4>
+          <form (ngSubmit)="salvarParticipante()">
+            <div class="campo">
+              <label for="descricaoParticipante">Descrição</label>
+              <input id="descricaoParticipante" name="descricaoParticipante" type="text"
+                [(ngModel)]="participanteForm.descricao" required>
+            </div>
+            <div class="campo">
+              <label for="emailParticipante">E-mail</label>
+              <input id="emailParticipante" name="emailParticipante" type="email"
+                [(ngModel)]="participanteForm.email" required>
+            </div>
+            <div class="campo">
+              <label for="telefoneParticipante">Telefone</label>
+              <input id="telefoneParticipante" name="telefoneParticipante" type="tel"
+                [(ngModel)]="participanteForm.telefone" required>
+            </div>
+            <div class="campo">
+              <label for="pagamentoParticipante">Forma de pagamento</label>
+              <select id="pagamentoParticipante" name="pagamentoParticipante"
+                [(ngModel)]="participanteForm.formaPagamento" required>
+                <option value="">Selecione</option>
+                <option value="Pix">Pix</option>
+                <option value="Cartão de crédito">Cartão de crédito</option>
+                <option value="Cartão de débito">Cartão de débito</option>
+                <option value="Dinheiro">Dinheiro</option>
+              </select>
+            </div>
+            @if (mensagemParticipante) {
+              <p class="erro">{{ mensagemParticipante }}</p>
+            }
+            <div class="acoes">
+              <button type="submit" [disabled]="!participanteValido ||
+                (participanteEmEdicaoId === null && participantesDoEvento(item.id).length >= (item.vagas ?? 0))">
+                {{ participanteEmEdicaoId === null ? 'Adicionar participante' : 'Salvar alterações' }}
+              </button>
+              @if (participanteEmEdicaoId !== null) {
+                <button type="button" class="secundario" (click)="cancelarEdicaoParticipante()">Cancelar</button>
+              }
+            </div>
+          </form>
+          <h4>Participantes cadastrados</h4>
+          @for (p of participantesDoEvento(item.id); track p.id) {
+            <div class="participante-card">
+              <p><strong>Descrição:</strong> {{ p.descricao }}</p>
+              <p><strong>E-mail:</strong> {{ p.email }}</p>
+              <p><strong>Telefone:</strong> {{ p.telefone }}</p>
+              <p><strong>Pagamento:</strong> {{ p.formaPagamento }}</p>
+              <div class="acoes">
+                <button type="button" (click)="editarParticipante(p)">Editar</button>
+                <button type="button" class="perigo" (click)="excluirParticipante(p)">Excluir</button>
+              </div>
+            </div>
+          } @empty {
+            <p>Nenhum participante cadastrado neste evento.</p>
+          }
+        </section>
+      }
     </div>
   } @empty {
     <p>Nenhum evento cadastrado.</p>
