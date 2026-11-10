@@ -111,17 +111,20 @@
 <div class="lista-eventos">
   @for (item of eventos; track item.id) {
     <div class="evento-card">
-      <h3>{{ item.titulo }}</h3>
+      <h3>{{ item.titulo | titulo }}</h3>
       <p><strong>ID:</strong> {{ item.id }}</p>
-      <p><strong>Data:</strong> {{ item.data }}</p>
-      <p><strong>Local:</strong> {{ item.local }}</p>
+      <p class="resumo-evento">{{ item.titulo | resumo:40 }}</p>
+      <p><strong>Data:</strong> {{ item.data | date:'dd/MM/yyyy':'UTC' }}</p>
+      <p><strong>Local:</strong> {{ item.local | uppercase }}</p>
       <p><strong>Responsável:</strong> {{ item.emailResponsavel }}</p>
 
-      <p><strong>Vagas:</strong> {{ item.vagas }} ({{ participantesDoEvento(item.id).length }} inscrito(s))</p>
+      <p><strong>Vagas:</strong> {{ item.vagas | number:'1.0-0' }} ({{ participantesDoEvento(item.id).length }} inscrito(s))</p>
       <button type="button" (click)="selecionarEvento(item.id)">Gerenciar participantes</button>
       @if (eventoSelecionadoId === item.id) {
         <section class="participantes">
-          <h4>Participantes de {{ item.titulo }}</h4>
+          <h4>Participantes de {{ item.titulo | titulo }}</h4>
+          <p>{{ item.data | date:'EEEE, d \'de\' MMMM':'UTC' }} · {{ item.data | diasPara }}</p>
+          <p>Valor de exemplo: {{ 49.9 | currency:'BRL' }}</p>
           <form (ngSubmit)="salvarParticipante()">
             <div class="campo">
               <label for="nomeParticipante">Nome</label>
@@ -143,10 +146,10 @@
               <select id="pagamentoParticipante" name="pagamentoParticipante"
                 [(ngModel)]="participanteForm.formaPagamento" required>
                 <option value="">Selecione</option>
-                <option value="Pix">Pix</option>
-                <option value="Cartão de crédito">Cartão de crédito</option>
-                <option value="Cartão de débito">Cartão de débito</option>
-                <option value="Dinheiro">Dinheiro</option>
+                <option value="pix">Pix</option>
+                <option value="cartao">Cartão de crédito</option>
+                <option value="boleto">Boleto</option>
+                <option value="dinheiro">Dinheiro</option>
               </select>
             </div>
             @if (mensagemParticipante) {
@@ -165,10 +168,10 @@
           <h4>Participantes cadastrados</h4>
           @for (p of participantesDoEvento(item.id); track p.id) {
             <div class="participante-card">
-              <p><strong>Nome:</strong> {{ p.nome }}</p>
-              <p><strong>E-mail:</strong> {{ p.email }}</p>
-              <p><strong>Telefone:</strong> {{ p.telefone }}</p>
-              <p><strong>Pagamento:</strong> {{ p.formaPagamento }}</p>
+              <p><span class="avatar">{{ p.nome | iniciais }}</span> <strong>Nome:</strong> {{ p.nome }}</p>
+              <p><strong>E-mail:</strong> {{ p.email | mascaraEmail }}</p>
+              <p><strong>Telefone:</strong> {{ p.telefone | telefone }}</p>
+              <p><strong>Pagamento:</strong> {{ p.formaPagamento | formaPagamento }}</p>
               <div class="acoes">
                 <button type="button" (click)="editarParticipante(p)">Editar</button>
                 <button type="button" class="perigo" (click)="excluirParticipante(p)">Excluir</button>
