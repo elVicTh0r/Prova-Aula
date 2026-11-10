@@ -42,7 +42,7 @@ export class CadastroEvento {
   }
 
   novoParticipante(): Omit<Participante, 'id' | 'eventoId'> {
-    return { descricao: '', email: '', telefone: '', formaPagamento: '' };
+    return { nome: '', email: '', telefone: '', formaPagamento: '' };
   }
 
   private carregarDados(): void {
@@ -83,7 +83,7 @@ export class CadastroEvento {
 
   get participanteValido(): boolean {
     const p = this.participanteForm;
-    return p.descricao.trim().length > 0 &&
+    return p.nome.trim().length > 0 &&
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email.trim()) &&
       p.telefone.trim().length > 0 &&
       p.formaPagamento.trim().length > 0;
@@ -101,7 +101,7 @@ export class CadastroEvento {
     }
 
     const dados = {
-      descricao: this.participanteForm.descricao.trim(),
+      nome: this.participanteForm.nome.trim(),
       email: this.participanteForm.email.trim(),
       telefone: this.participanteForm.telefone.trim(),
       formaPagamento: this.participanteForm.formaPagamento.trim()
@@ -128,7 +128,7 @@ export class CadastroEvento {
     if (participante.eventoId !== this.eventoSelecionadoId) return;
     this.participanteEmEdicaoId = participante.id;
     this.participanteForm = {
-      descricao: participante.descricao,
+      nome: participante.nome,
       email: participante.email,
       telefone: participante.telefone,
       formaPagamento: participante.formaPagamento
