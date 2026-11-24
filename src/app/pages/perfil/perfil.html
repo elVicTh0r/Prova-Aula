@@ -1,0 +1,49 @@
+<section class="perfil-card">
+  <div class="topo-perfil">
+    <div>
+      <span class="etiqueta">ÁREA AUTENTICADA</span>
+      <h1>Meu perfil</h1>
+    </div>
+    <button type="button" class="secundario" (click)="sair()">Sair</button>
+  </div>
+
+  @if (perfil(); as p) {
+    <div class="usuario">
+      <h2>Olá, {{ p.firstName }} {{ p.lastName }}!</h2>
+      <p>E-mail: {{ p.email }}</p>
+      <p>ID: {{ p.id }}</p>
+    </div>
+  } @else if (erroPerfil()) {
+    <p class="mensagem-erro" role="alert">{{ erroPerfil() }}</p>
+  } @else {
+    <p>Carregando perfil...</p>
+  }
+
+  <hr>
+  <h2>Consulta de CEP</h2>
+  <p>Essa requisição vai ao ViaCEP <strong>sem</strong> o cabeçalho Authorization.</p>
+  <form (ngSubmit)="buscarCep()">
+    <label for="cep">CEP</label>
+    <div class="consulta">
+      <input id="cep" name="cep" [(ngModel)]="cep" inputmode="numeric" placeholder="40140-110" maxlength="9" required>
+      <button type="submit" [disabled]="carregandoCep()">
+        {{ carregandoCep() ? 'Consultando...' : 'Buscar' }}
+      </button>
+    </div>
+  </form>
+
+  @if (erroCep()) {
+    <p class="mensagem-erro" role="alert">{{ erroCep() }}</p>
+  }
+
+  @if (endereco(); as e) {
+    <dl class="endereco">
+      <dt>Rua</dt><dd>{{ e.rua }}</dd>
+      <dt>Bairro</dt><dd>{{ e.bairro }}</dd>
+      <dt>Cidade</dt><dd>{{ e.cidade }}</dd>
+      <dt>UF</dt><dd>{{ e.uf }}</dd>
+    </dl>
+  }
+
+  <p class="nota">Para comprovar a atividade, abra DevTools → Network. Compare os headers de <code>/auth/me</code> e da requisição ao ViaCEP.</p>
+</section>
